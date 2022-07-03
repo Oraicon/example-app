@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * @OA\Info(title="My First API", version="0.1")
+ */
+
 namespace App\Http\Controllers;
 
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;

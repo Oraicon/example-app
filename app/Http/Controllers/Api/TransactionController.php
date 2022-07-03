@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Transaction;
-use Illuminate\Support\Facades\DB;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -24,9 +23,11 @@ class TransactionController extends Controller
             return response()->json($validator->errors()->toArray());
         }
 
+        //execute
         $repository = new TransactionRepository();
         $read = $repository->read_data_product($request);
 
+        //if data exist
         if ($read) {
             $product_id = $read[0]['id'];
             $product_price = $read[0]['product_price'];
@@ -52,11 +53,11 @@ class TransactionController extends Controller
                 ]);
             }else{
                 return response()->json([
-                    "code" => 400,
+                    "code" => 404,
                     "message" => "Bad request !",
                 ]);
             }
-
+        //if data doesnt exist
         }else{
             return response()->json([
                 "code" => 404,
@@ -68,20 +69,22 @@ class TransactionController extends Controller
 
 class TransactionRepository extends Controller
 {
-
+    //check data product
     public function read_data_product($request){
         $product = Product::select('id', 'product_price', 'product_quantity')
-        ->where('product_name', '=', $request->name)
+        ->where('product_name', $request->name)
         ->get();
 
         return $product;
     }
 
+    //update data product
     public function update_data_product($product_id, $quantity_rest){
-        $product = Product::where('id', $product_id)
+        Product::where('id', $product_id)
         ->update(['product_quantity' => $quantity_rest]);
     }
     
+    //insert data transaction
     public function insert_data_transaction($product_id, $transaction_quantity){
         $product = Transaction::create([
             'product_id'     => $product_id,
