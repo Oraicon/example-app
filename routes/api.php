@@ -20,9 +20,17 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::post('product/1/create_data', [ProductController::class, 'insert']);
-Route::post('product/1/read_data', [ProductController::class, 'read']);
-Route::post('product/1/update_data', [ProductController::class, 'update']);
-Route::post('product/1/delete_data', [ProductController::class, 'delete']);
+Route::controller(ProductController::class)->group(function () {
+    Route::get('v1/products', 'readAllProduct');
+    Route::get('v1/products/{pageSize}/{pageIndex}', '');
+    Route::get('v1/products/{sortBy}/{sorting}/{filterByColumn}/{searchByColumn}', '');
 
-Route::post('transaction/1/transaction_data', [TransactionController::class, 'transaction']);
+    Route::post('v1/products', 'insertProduct');
+    Route::put('v1/products', 'updateProduct');
+    Route::delete('v1/products/{id}', 'deleteProduct');
+});
+
+Route::controller(TransactionController::class)->group(function () {
+    Route::post('v1/transaction', 'transaction');
+    Route::put('v1/transaction', 'transaction');
+});

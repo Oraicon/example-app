@@ -14,11 +14,13 @@ return new class extends Migration
     public function up()
     {
         Schema::create('products', function (Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->string('id')->primary();
             $table->string('product_name');
             $table->integer('product_price');
             $table->integer('product_quantity');
             $table->timestamps();
+
+            $table->index(['id', 'created_at']);
         });
     }
 

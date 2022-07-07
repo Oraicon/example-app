@@ -14,10 +14,13 @@ return new class extends Migration
     public function up()
     {
         Schema::create('transactions', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->integer('product_id');
-            $table->integer('transactions_quantity');
+            $table->string('id')->primary();
+            $table->string('product_name');
+            $table->integer('product_price');
+            $table->integer('product_quantity');
             $table->timestamps();
+
+            $table->index(['id', 'created_at']);
         });
     }
 
