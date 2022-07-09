@@ -1,0 +1,145 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "L5 OpenApi",
+        "description": "L5 Swagger OpenApi description",
+        "contact": {
+            "email": "darius@matulionis.lt"
+        },
+        "license": {
+            "name": "Apache 2.0",
+            "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
+        },
+        "version": "1.0.0",
+        "x-logo": {
+            "url": "https://via.placeholder.com/190x90.png?text=L5-Swagger"
+        }
+    },
+    "paths": {
+        "/v1/products": {
+            "get": {
+                "tags": [
+                    "ProductController"
+                ],
+                "summary": "Read all product",
+                "operationId": "readAllProduct",
+                "responses": {
+                    "200": {
+                        "description": "Product read successfully"
+                    },
+                    "405": {
+                        "description": "Invalid input"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "ProductController"
+                ],
+                "summary": "update data product",
+                "operationId": "updateProduct",
+                "responses": {
+                    "200": {
+                        "description": "Product updated successfully"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "422": {
+                        "description": "Required field empty"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "ProductController"
+                ],
+                "summary": "Insert data product",
+                "operationId": "insertProduct",
+                "responses": {
+                    "200": {
+                        "description": "Product created successfully"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "422": {
+                        "description": "Required field empty"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "ProductController"
+                ],
+                "summary": "delete data product",
+                "operationId": "deleteProduct",
+                "responses": {
+                    "200": {
+                        "description": "Product deleted successfully"
+                    },
+                    "400": {
+                        "description": "Invalid input"
+                    }
+                }
+            }
+        },
+        "/v1/products/{pagePaginate}": {
+            "get": {
+                "tags": [
+                    "ProductController"
+                ],
+                "summary": "Read paginate product",
+                "operationId": "paginateProduct",
+                "responses": {
+                    "200": {
+                        "description": "Product read successfully"
+                    },
+                    "405": {
+                        "description": "Invalid input"
+                    }
+                }
+            }
+        },
+        "/v1/products/{sortBy}/{sorting}/{filterByColumn}/{searchByColumn}": {
+            "get": {
+                "tags": [
+                    "ProductController"
+                ],
+                "summary": "Read date with sortby,sorting, filter, and search by column",
+                "operationId": "sortingProduct",
+                "responses": {
+                    "200": {
+                        "description": "Product read successfully"
+                    },
+                    "405": {
+                        "description": "Invalid input"
+                    }
+                }
+            }
+        },
+        "/v1/transaction": {
+            "post": {
+                "tags": [
+                    "TransactionController"
+                ],
+                "summary": "Insert data transaction",
+                "operationId": "transactionProduct",
+                "responses": {
+                    "200": {
+                        "description": "Transaction created successfully"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "404": {
+                        "description": "Not found"
+                    },
+                    "422": {
+                        "description": "Required field empty"
+                    }
+                }
+            }
+        }
+    }
+}

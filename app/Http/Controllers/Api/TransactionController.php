@@ -21,6 +21,54 @@ class TransactionController extends Controller
         $this->transactionRepository = $transactionRepository;
     }
 
+    /**
+     * @OA\Info(
+     *      version="1.0.0",
+     *      x={
+     *          "logo": {
+     *              "url": "https://via.placeholder.com/190x90.png?text=L5-Swagger"
+     *          }
+     *      },
+     *      title="L5 OpenApi",
+     *      description="L5 Swagger OpenApi description",
+     *      @OA\Contact(
+     *          email="darius@matulionis.lt"
+     *      ),
+     *     @OA\License(
+     *         name="Apache 2.0",
+     *         url="https://www.apache.org/licenses/LICENSE-2.0.html"
+     *     )
+     * )
+    */
+
+    /**
+     * Insert data transaction
+     *
+     * @OA\post(
+     *     tags={"TransactionController"},
+     *     path="/v1/transaction",
+     *     operationId="transactionProduct",
+     *     @OA\Response(
+     *         response=200,
+     *         description="Transaction created successfully"
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Bad Request"
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Not found"
+     *     ),
+     *     @OA\Response(
+     *         response=422,
+     *         description="Required field empty"
+     *     ),
+     * )
+     * 
+     * 
+     */
+
     //transaction
     public function transactionProduct(Request $request){
         $validator = Validator::make($request->all(), [
@@ -32,7 +80,8 @@ class TransactionController extends Controller
         if ($validator->fails()) {
             return response()->json([
                 "code" => 422,
-                "message" => $validator->errors()->toArray(),
+                "message" => "Required field empty",
+                "data" => $validator->errors()->toArray()
             ]);
         }
 
@@ -78,7 +127,7 @@ class TransactionController extends Controller
         }else{
             return response()->json([
                 "code" => 404,
-                "message" => "Not found"
+                "message" => "Not found !"
             ]);
         }
     }
