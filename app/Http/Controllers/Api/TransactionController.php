@@ -3,16 +3,26 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Models\Transaction;
-use App\Models\Product;
+use App\Interfaces\ProductRepositoryInterface;
+use App\Interfaces\TransactionRepositoryInterface;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
 
 class TransactionController extends Controller
 {
+
+    private ProductRepositoryInterface $productRepository;
+    private TransactionRepositoryInterface $transactionRepository;
+
+    public function __construct(ProductRepositoryInterface $productRepository, TransactionRepositoryInterface $transactionRepository) 
+    {
+        $this->productRepository = $productRepository;
+        $this->transactionRepository = $transactionRepository;
+    }
+
     //transaction
-    public function transaction(Request $request){
+    public function transactionProduct(Request $request){
         $validator = Validator::make($request->all(), [
             'name'     => 'required',
             'quantity'   => 'required',
@@ -20,28 +30,35 @@ class TransactionController extends Controller
 
         //if some data is null
         if ($validator->fails()) {
-            return response()->json($validator->errors()->toArray());
+            return response()->json([
+                "code" => 422,
+                "message" => $validator->errors()->toArray(),
+            ]);
         }
 
         //execute
-        $repository = new TransactionRepository();
-        $read = $repository->read_data_product($request);
+        $read = $this->productRepository->selectProduct($request);
 
         //if data exist
-        if ($read) {
+        if ($read->isEmpty()) {
+            // preparation variable
             $product_id = $read[0]['id'];
             $product_price = $read[0]['product_price'];
             $product_quantity = $read[0]['product_quantity'];
             $transaction_name = $request->name;
             $transaction_quantity = $request->quantity;
 
+            // summation
             $quantity_rest = $product_quantity - $transaction_quantity;
             $transaction_amount = $product_price * $transaction_quantity;
 
-            $repository->update_data_product($product_id, $quantity_rest);
-            $create_transaction = $repository->insert_data_transaction($product_id, $transaction_quantity);
+            // save data
+            $create_transaction = $this->transactionRepository->insertTransaction($product_id, $transaction_quantity);
 
             if ($create_transaction) {
+                // update rest quantity
+                $this->productRepository->updateQuantityproduct($product_id, $quantity_rest);
+                // return response
                 return response()->json([
                     "success" => 200,
                     "message" => "Transaction created successfully.",
@@ -53,7 +70,7 @@ class TransactionController extends Controller
                 ]);
             }else{
                 return response()->json([
-                    "code" => 404,
+                    "code" => 400,
                     "message" => "Bad request !",
                 ]);
             }
@@ -61,36 +78,8 @@ class TransactionController extends Controller
         }else{
             return response()->json([
                 "code" => 404,
-                "message" => "not found"
+                "message" => "Not found"
             ]);
         }
-    }
-}
-
-class TransactionRepository extends Controller
-{
-    //check data product
-    public function read_data_product($request){
-        $product = Product::select('id', 'product_price', 'product_quantity')
-        ->where('product_name', $request->name)
-        ->get();
-
-        return $product;
-    }
-
-    //update data product
-    public function update_data_product($product_id, $quantity_rest){
-        Product::where('id', $product_id)
-        ->update(['product_quantity' => $quantity_rest]);
-    }
-    
-    //insert data transaction
-    public function insert_data_transaction($product_id, $transaction_quantity){
-        $product = Transaction::create([
-            'product_id'     => $product_id,
-            'transactions_quantity'   => $transaction_quantity
-        ]);
-
-        return $product;
     }
 }

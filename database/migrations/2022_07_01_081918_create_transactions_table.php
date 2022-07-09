@@ -15,12 +15,11 @@ return new class extends Migration
     {
         Schema::create('transactions', function (Blueprint $table) {
             $table->string('id')->primary();
-            $table->string('product_name');
-            $table->integer('product_price');
-            $table->integer('product_quantity');
+            $table->string('product_id');
+            $table->integer('transactions_quantity');
             $table->timestamps();
 
-            $table->index(['id', 'created_at']);
+            $table->index(['id', 'product_id', 'created_at']);
         });
     }
 

@@ -22,8 +22,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::controller(ProductController::class)->group(function () {
     Route::get('v1/products', 'readAllProduct');
-    Route::get('v1/products/{pageSize}/{pageIndex}', '');
-    Route::get('v1/products/{sortBy}/{sorting}/{filterByColumn}/{searchByColumn}', '');
+    Route::get('v1/products/{pagePaginate}', 'paginateProduct');
+    Route::get('v1/products/{sortBy}/{sorting}/{filterByColumn}/{searchByColumn}', 'sortingProduct');
 
     Route::post('v1/products', 'insertProduct');
     Route::put('v1/products', 'updateProduct');
@@ -31,6 +31,5 @@ Route::controller(ProductController::class)->group(function () {
 });
 
 Route::controller(TransactionController::class)->group(function () {
-    Route::post('v1/transaction', 'transaction');
-    Route::put('v1/transaction', 'transaction');
+    Route::post('v1/transaction', 'transactionProduct');
 });
