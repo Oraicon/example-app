@@ -4,9 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Interfaces\ProductInterface;
 use App\Interfaces\TransactionInterface;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-use OpenApi\Annotations as OA;
 
 class TransactionController extends Controller
 {
@@ -20,38 +20,11 @@ class TransactionController extends Controller
         $this->transactionRepository = $transactionRepository;
     }
 
-    /**
-     * Insert data transaction
-     *
-     * @OA\post(
-     *     tags={"TransactionController"},
-     *     path="/v1/transaction",
-     *     operationId="transactionProduct",
-     *     @OA\Response(
-     *         response=200,
-     *         description="Transaction created successfully"
-     *     ),
-     *     @OA\Response(
-     *         response=400,
-     *         description="Bad Request"
-     *     ),
-     *     @OA\Response(
-     *         response=404,
-     *         description="Not found"
-     *     ),
-     *     @OA\Response(
-     *         response=422,
-     *         description="Required field empty"
-     *     ),
-     * )
-     *
-     *
-     */
-    public function transactionProduct(Request $request): \Illuminate\Http\JsonResponse
+    public function transaction(Request $request): JsonResponse
     {
         $validator = Validator::make($request->all(), [
-            'name'     => 'required',
-            'quantity'   => 'required',
+            'name' => 'required',
+            'quantity' => 'required',
         ]);
 
         //if some data is null
@@ -80,11 +53,11 @@ class TransactionController extends Controller
             $transaction_amount = $product_price * $transaction_quantity;
 
             // save data
-            $create_transaction = $this->transactionRepository->insertTransaction($product_id, $transaction_quantity);
+            $create_transaction = $this->transactionRepository->createTransaction($product_id, $transaction_quantity);
 
             if ($create_transaction) {
                 // update rest quantity
-                $this->productRepository->updateQuantityproduct($product_id, $quantity_rest);
+                $this->productRepository->updateProductQty($product_id, $quantity_rest);
                 // return response
                 return response()->json([
                     "success" => 200,
@@ -95,14 +68,14 @@ class TransactionController extends Controller
                         'Total' => $transaction_amount
                     ]
                 ]);
-            }else{
+            } else {
                 return response()->json([
                     "code" => 400,
                     "message" => "Bad request !",
                 ]);
             }
-        //if data doesnt exist
-        }else{
+            //if data doesnt exist
+        } else {
             return response()->json([
                 "code" => 404,
                 "message" => "Not found !"

@@ -1,8 +1,8 @@
 {
     "openapi": "3.0.0",
     "info": {
-        "title": "Marketplace Swager API Documentation",
-        "description": "Marketplace Swager API Description",
+        "title": "Marketplace Back End Swager API Documentation",
+        "description": "Marketplace Back End Swager API Description",
         "contact": {
             "email": "example@google.com"
         },
@@ -15,169 +15,132 @@
             "url": "https://via.placeholder.com/190x90.png?text=MarketPlace"
         }
     },
+    "servers": [
+        {
+            "url": "http://localhost:8080/api/v1",
+            "description": "Demo API Server"
+        }
+    ],
     "paths": {
-        "/api/v1/product": {
+        "/api/v1/product/{pageIndex}/{pageSize}": {
             "get": {
                 "tags": [
                     "product"
                 ],
-                "summary": "Returns All Product API response",
-                "description": "A sample greeting to test out the API",
+                "summary": "Returns Product API response with Pagination",
+                "description": "returns product API response with Pagination",
                 "operationId": "product",
                 "parameters": [
                     {
-                        "name": "product_name",
+                        "name": "pageIndex",
                         "in": "query",
-                        "description": "product name",
+                        "description": "Page Index",
                         "required": true,
                         "schema": {
                             "type": "string"
-                        }
+                        },
+                        "example": "1"
                     },
                     {
-                        "name": "product_price",
+                        "name": "pageSize",
                         "in": "query",
-                        "description": "product price",
+                        "description": "Page Size",
                         "required": true,
                         "schema": {
                             "type": "string"
-                        }
+                        },
+                        "example": "10"
                     },
                     {
-                        "name": "product_quantity",
+                        "name": "filterBy",
                         "in": "query",
-                        "description": "product quantity",
-                        "required": true,
+                        "description": "Filter By Available Columns",
+                        "required": false,
                         "schema": {
-                            "type": "string"
+                            "type": "array",
+                            "items": {
+                                "type": "string",
+                                "default": "product_name"
+                            }
+                        },
+                        "example": "string 1,string 2,string 3"
+                    },
+                    {
+                        "name": "sortBy",
+                        "in": "query",
+                        "description": "Sort By Descending",
+                        "required": false,
+                        "schema": {
+                            "type": "boolean"
                         }
                     }
                 ],
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "properties": {
+                                    "product_name": {
+                                        "description": "product name",
+                                        "type": "string"
+                                    },
+                                    "product_url": {
+                                        "description": "file to upload",
+                                        "type": "string",
+                                        "format": "binary"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
                 "responses": {
                     "200": {
-                        "description": "retrived data successfully"
+                        "description": "Successful Operation"
                     },
                     "400": {
                         "description": "Bad Request"
                     },
                     "404": {
-                        "description": "Not found"
+                        "description": "Not Found"
                     },
-                    "422": {
-                        "description": "Required field empty"
-                    }
-                }
-            }
-        },
-        "/v1/products/{pagePaginate}": {
-            "get": {
-                "tags": [
-                    "ProductController"
-                ],
-                "summary": "Read paginate product",
-                "operationId": "paginateProduct",
-                "responses": {
-                    "200": {
-                        "description": "Product read successfully"
-                    },
-                    "405": {
-                        "description": "Invalid input"
-                    }
-                }
-            }
-        },
-        "/v1/products/{sortBy}/{sorting}/{filterByColumn}/{searchByColumn}": {
-            "get": {
-                "tags": [
-                    "ProductController"
-                ],
-                "summary": "Read date with sortBy,sorting, filter, and search by column",
-                "operationId": "sortingProduct",
-                "responses": {
-                    "200": {
-                        "description": "Product read successfully"
-                    },
-                    "405": {
-                        "description": "Invalid input"
-                    }
-                }
-            }
-        },
-        "/v1/products": {
-            "put": {
-                "tags": [
-                    "ProductController"
-                ],
-                "summary": "update data product",
-                "operationId": "updateProduct",
-                "responses": {
-                    "200": {
-                        "description": "Product updated successfully"
-                    },
-                    "400": {
-                        "description": "Bad Request"
-                    },
-                    "422": {
-                        "description": "Required field empty"
-                    }
-                }
-            },
-            "post": {
-                "tags": [
-                    "ProductController"
-                ],
-                "summary": "Insert data product",
-                "operationId": "insertProduct",
-                "responses": {
-                    "200": {
-                        "description": "Product created successfully"
-                    },
-                    "400": {
-                        "description": "Bad Request"
-                    },
-                    "422": {
-                        "description": "Required field empty"
-                    }
-                }
-            },
-            "delete": {
-                "tags": [
-                    "ProductController"
-                ],
-                "summary": "delete data product",
-                "operationId": "deleteProduct",
-                "responses": {
-                    "200": {
-                        "description": "Product deleted successfully"
-                    },
-                    "400": {
-                        "description": "Invalid input"
-                    }
-                }
-            }
-        },
-        "/v1/transaction": {
-            "post": {
-                "tags": [
-                    "TransactionController"
-                ],
-                "summary": "Insert data transaction",
-                "operationId": "transactionProduct",
-                "responses": {
-                    "200": {
-                        "description": "Transaction created successfully"
-                    },
-                    "400": {
-                        "description": "Bad Request"
-                    },
-                    "404": {
-                        "description": "Not found"
-                    },
-                    "422": {
-                        "description": "Required field empty"
+                    "500": {
+                        "description": "Server Error"
                     }
                 }
             }
         }
-    }
+    },
+    "components": {
+        "securitySchemes": {
+            "api_key": {
+                "type": "apiKey",
+                "name": "api_key",
+                "in": "header"
+            },
+            "petstore_auth": {
+                "type": "oauth2",
+                "flows": {
+                    "implicit": {
+                        "authorizationUrl": "https://petstore.swagger.io/oauth/dialog",
+                        "scopes": {
+                            "read:pets": "read your API",
+                            "write:pets": "modify pets in your account"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "product",
+            "description": "Everything about your products",
+            "externalDocs": {
+                "description": "Find out more",
+                "url": "https://swagger.io"
+            }
+        }
+    ]
 }

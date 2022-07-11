@@ -20,14 +20,15 @@ class ProductController extends Controller
 
     /**
      * @OA\Get(
-     *     path="/api/v1/product",
+     *     path="/api/v1/product/{pageIndex}/{pageSize}",
      *     tags={"product"},
-     *     summary="Returns All Product API response",
-     *     description="A sample greeting to test out the API",
+     *     summary="Returns Product API response with Pagination",
+     *     description="returns product API response with Pagination",
      *     operationId="product",
      *     @OA\Parameter(
-     *          name="product_name",
-     *          description="product name",
+     *          name="pageIndex",
+     *          description="Page Index",
+     *          example="1",
      *          required=true,
      *          in="query",
      *          @OA\Schema(
@@ -35,8 +36,9 @@ class ProductController extends Controller
      *          )
      *     ),
      *     @OA\Parameter(
-     *          name="product_price",
-     *          description="product price",
+     *          name="pageSize",
+     *          description="Page Size",
+     *          example="10",
      *          required=true,
      *          in="query",
      *          @OA\Schema(
@@ -44,33 +46,50 @@ class ProductController extends Controller
      *          )
      *     ),
      *     @OA\Parameter(
-     *          name="product_quantity",
-     *          description="product quantity",
-     *          required=true,
+     *          name="filterBy",
+     *          description="Filter By Available Columns",
+     *          example="string 1,string 2,string 3",
+     *          required=false,
+     *          in="query",
+     *         @OA\Schema(
+     *           type = "array",
+     *              @OA\Items(type="string",default="product_name")
+     *     )
+     *     ),
+     *     @OA\Parameter(
+     *          name="sortBy",
+     *          description="Sort By Descending",
+     *          required=false,
      *          in="query",
      *          @OA\Schema(
-     *              type="string"
+     *              type="boolean"
      *          )
      *     ),
-     *     @OA\Response(
-     *         response=200,
-     *         description="retrived data successfully"
+     *      @OA\RequestBody(
+     *         @OA\MediaType(
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(
+     *                  @OA\Property(
+     *                     description="product name",
+     *                     property="product_name",
+     *                     type="string",
+     *                 ),
+     *                 @OA\Property(
+     *                     description="file to upload",
+     *                     property="product_url",
+     *                     type="string",
+     *                     format="binary",
+     *                 ),
+     *             )
+     *         )
      *     ),
-     *     @OA\Response(
-     *         response=400,
-     *         description="Bad Request"
-     *     ),
-     *     @OA\Response(
-     *         response=404,
-     *         description="Not found"
-     *     ),
-     *     @OA\Response(
-     *         response=422,
-     *         description="Required field empty"
-     *     ),
+     *     @OA\Response(response=200,description="Successful Operation"),
+     *     @OA\Response(response=400,description="Bad Request"),
+     *     @OA\Response(response=404,description="Not Found"),
+     *     @OA\Response(response=500,description="Server Error"),
      * )
      */
-    public function readAllProduct(): JsonResponse
+    public function productPagination(): JsonResponse
     {
         $read = $this->productRepository->getAllproduct();
 
@@ -88,25 +107,6 @@ class ProductController extends Controller
         }
     }
 
-    /**
-     * Read paginate product
-     *
-     * @OA\get(
-     *     tags={"ProductController"},
-     *     path="/v1/products/{pagePaginate}",
-     *     operationId="paginateProduct",
-     *     @OA\Response(
-     *         response=200,
-     *         description="Product read successfully"
-     *     ),
-     *     @OA\Response(
-     *         response=405,
-     *         description="Invalid input"
-     *     ),
-     * )
-     *
-     *
-     */
     public function paginateProduct(Request $request): JsonResponse
     {
         $pagePaginate = $request->route('pagePaginate');
@@ -127,25 +127,6 @@ class ProductController extends Controller
         }
     }
 
-    /**
-     * Read date with sortBy,sorting, filter, and search by column
-     *
-     * @OA\get(
-     *     tags={"ProductController"},
-     *     path="/v1/products/{sortBy}/{sorting}/{filterByColumn}/{searchByColumn}",
-     *     operationId="sortingProduct",
-     *     @OA\Response(
-     *         response=200,
-     *         description="Product read successfully"
-     *     ),
-     *     @OA\Response(
-     *         response=405,
-     *         description="Invalid input"
-     *     ),
-     * )
-     *
-     *
-     */
     public function sortingProduct(Request $request): JsonResponse
     {
         $sortBy = $request->route('sortBy');
@@ -175,29 +156,6 @@ class ProductController extends Controller
         }
     }
 
-    /**
-     * Insert data product
-     *
-     * @OA\post(
-     *     tags={"ProductController"},
-     *     path="/v1/products",
-     *     operationId="insertProduct",
-     * @OA\Response(
-     *         response=200,
-     *         description="Product created successfully"
-     *     ),
-     *     @OA\Response(
-     *         response=400,
-     *         description="Bad Request"
-     *     ),
-     *     @OA\Response(
-     *         response=422,
-     *         description="Required field empty"
-     *     ),
-     * )
-     *
-     *
-     */
     public function insertProduct(Request $request): JsonResponse
     {
         //validation
@@ -235,31 +193,6 @@ class ProductController extends Controller
         }
     }
 
-    /**
-     * update data product
-     *
-     * @OA\put(
-     *     tags={"ProductController"},
-     *     path="/v1/products",
-     *     operationId="updateProduct",
-     * @OA\Response(
-     *         response=200,
-     *         description="Product updated successfully"
-     *     ),
-     *     @OA\Response(
-     *         response=400,
-     *         description="Bad Request"
-     *     ),
-     *     @OA\Response(
-     *         response=422,
-     *         description="Required field empty"
-     *     ),
-     * )
-     *
-     *
-     */
-
-    //update data product
     public function updateProduct(Request $request): JsonResponse
     {
         //validation
@@ -296,27 +229,6 @@ class ProductController extends Controller
         }
     }
 
-    /**
-     * delete data product
-     *
-     * @OA\delete(
-     *     tags={"ProductController"},
-     *     path="/v1/products",
-     *     operationId="deleteProduct",
-     * @OA\Response(
-     *         response=200,
-     *         description="Product deleted successfully"
-     *     ),
-     *     @OA\Response(
-     *         response=400,
-     *         description="Invalid input"
-     *     ),
-     * )
-     *
-     *
-     */
-
-    //delete data product
     public function deleteProduct(Request $request): JsonResponse
     {
         //validation

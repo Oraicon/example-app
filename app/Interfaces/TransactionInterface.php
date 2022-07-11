@@ -4,5 +4,5 @@ namespace App\Interfaces;
 
 interface TransactionInterface
 {
-    public function Transaction($product_id, $transaction_quantity);
+    public function createTransaction($product_id, $transaction_quantity);
 }
