@@ -6,6 +6,12 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 
+/**
+ * @method static fastPaginate($pagePaginate)
+ * @method static select($searchByColumn)
+ * @method static create(array $array)
+ * @method static where(string $string, $product_id)
+ */
 class Product extends Model
 {
     use HasFactory;

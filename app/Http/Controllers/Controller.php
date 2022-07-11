@@ -1,28 +1,25 @@
 <?php
 
-/**
- * @OA\Info(title="My First API", version="0.1")
- */
-
 namespace App\Http\Controllers;
 
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller as BaseController;
+use OpenApi\Annotations as OA;
 
 /**
  * @OA\Info(
  *      version="1.0.0",
  *      x={
  *          "logo": {
- *              "url": "https://via.placeholder.com/190x90.png?text=L5-Swagger"
+ *              "url": "https://via.placeholder.com/190x90.png?text=MarketPlace"
  *          }
  *      },
- *      title="L5 OpenApi",
- *      description="L5 Swagger OpenApi description",
+ *      title="Marketplace Swager API Documentation",
+ *      description="Marketplace Swager API Description",
  *      @OA\Contact(
- *          email="darius@matulionis.lt"
+ *          email="example@google.com"
  *      ),
  *     @OA\License(
  *         name="Apache 2.0",
@@ -30,7 +27,6 @@ use Illuminate\Routing\Controller as BaseController;
  *     )
  * )
  */
-
 class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;

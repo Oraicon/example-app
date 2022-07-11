@@ -6,6 +6,10 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 
+/**
+ * @method static create(array $array)
+ * @method static where(string $string, $name)
+ */
 class Transaction extends Model
 {
     use HasFactory;

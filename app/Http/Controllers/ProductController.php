@@ -1,73 +1,86 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
-use App\Interfaces\ProductRepositoryInterface;
+use App\Interfaces\ProductInterface;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use OpenApi\Annotations as OA;
 
 class ProductController extends Controller
 {
 
-    private ProductRepositoryInterface $productRepository;
+    private ProductInterface $productRepository;
 
-    public function __construct(ProductRepositoryInterface $productRepository) 
+    public function __construct(ProductInterface $productRepository)
     {
         $this->productRepository = $productRepository;
     }
 
     /**
-     * @OA\Info(
-     *      version="1.0.0",
-     *      x={
-     *          "logo": {
-     *              "url": "https://via.placeholder.com/190x90.png?text=L5-Swagger"
-     *          }
-     *      },
-     *      title="L5 OpenApi",
-     *      description="L5 Swagger OpenApi description",
-     *      @OA\Contact(
-     *          email="darius@matulionis.lt"
-     *      ),
-     *     @OA\License(
-     *         name="Apache 2.0",
-     *         url="https://www.apache.org/licenses/LICENSE-2.0.html"
-     *     )
-     * )
-    */
-
-    /**
-     * Read all product
-     *
-     * @OA\get(
-     *     tags={"ProductController"},
-     *     path="/v1/products",
-     *     operationId="readAllProduct",
+     * @OA\Get(
+     *     path="/api/v1/product",
+     *     tags={"product"},
+     *     summary="Returns All Product API response",
+     *     description="A sample greeting to test out the API",
+     *     operationId="product",
+     *     @OA\Parameter(
+     *          name="product_name",
+     *          description="product name",
+     *          required=true,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *     ),
+     *     @OA\Parameter(
+     *          name="product_price",
+     *          description="product price",
+     *          required=true,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *     ),
+     *     @OA\Parameter(
+     *          name="product_quantity",
+     *          description="product quantity",
+     *          required=true,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *     ),
      *     @OA\Response(
      *         response=200,
-     *         description="Product read successfully"
+     *         description="retrived data successfully"
      *     ),
      *     @OA\Response(
-     *         response=405,
-     *         description="Invalid input"
+     *         response=400,
+     *         description="Bad Request"
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Not found"
+     *     ),
+     *     @OA\Response(
+     *         response=422,
+     *         description="Required field empty"
      *     ),
      * )
-     * 
-     * 
      */
-
-    //read data product
-    public function readAllProduct(){
+    public function readAllProduct(): JsonResponse
+    {
         $read = $this->productRepository->getAllproduct();
 
-        if (!$read ->isEmpty()) {
+        if (!$read->isEmpty()) {
             return response()->json([
                 "success" => 200,
                 "message" => "Product read successfully.",
                 "data" => $read
             ]);
-        }else{
+        } else {
             return response()->json([
                 "code" => 405,
                 "message" => "Invalid input !",
@@ -91,23 +104,22 @@ class ProductController extends Controller
      *         description="Invalid input"
      *     ),
      * )
-     * 
-     * 
+     *
+     *
      */
-
-    //read date with paginate product
-    public function paginateProduct(Request $request){
+    public function paginateProduct(Request $request): JsonResponse
+    {
         $pagePaginate = $request->route('pagePaginate');
 
         $read = $this->productRepository->paginateProduct($pagePaginate);
 
-        if (!$read ->isEmpty()) {
+        if (!$read->isEmpty()) {
             return response()->json([
                 "success" => 200,
                 "message" => "Product read successfully.",
                 "data" => $read
             ]);
-        }else{
+        } else {
             return response()->json([
                 "code" => 405,
                 "message" => "Invalid input !",
@@ -116,7 +128,7 @@ class ProductController extends Controller
     }
 
     /**
-     * Read date with sortby,sorting, filter, and search by column
+     * Read date with sortBy,sorting, filter, and search by column
      *
      * @OA\get(
      *     tags={"ProductController"},
@@ -131,12 +143,11 @@ class ProductController extends Controller
      *         description="Invalid input"
      *     ),
      * )
-     * 
-     * 
+     *
+     *
      */
-
-    //read date with sortby,sorting, filter, and search by column
-    public function sortingProduct(Request $request){
+    public function sortingProduct(Request $request): JsonResponse
+    {
         $sortBy = $request->route('sortBy');
         $sorting = $request->route('sorting');
         $filterByColumn = $request->route('filterByColumn');
@@ -150,13 +161,13 @@ class ProductController extends Controller
 
         // var_dump($sortBy, $read);
 
-        if (!$read ->isEmpty()) {
+        if (!$read->isEmpty()) {
             return response()->json([
                 "success" => 200,
                 "message" => "Product read successfully.",
                 "data" => $read
             ]);
-        }else{
+        } else {
             return response()->json([
                 "code" => 405,
                 "message" => "Invalid input !",
@@ -184,17 +195,16 @@ class ProductController extends Controller
      *         description="Required field empty"
      *     ),
      * )
-     * 
-     * 
+     *
+     *
      */
-
-    //Insert data product
-    public function insertProduct(Request $request){
+    public function insertProduct(Request $request): JsonResponse
+    {
         //validation
         $validator = Validator::make($request->all(), [
-            'name'     => 'required',
-            'price'     => 'required',
-            'quantity'   => 'required',
+            'name' => 'required',
+            'price' => 'required',
+            'quantity' => 'required',
         ]);
 
         //if some data is null
@@ -206,7 +216,7 @@ class ProductController extends Controller
             ]);
         }
 
-        //execute 
+        //execute
         $insert = $this->productRepository->insertProduct($request);
 
         //response
@@ -216,7 +226,7 @@ class ProductController extends Controller
                 "message" => "Product created successfully.",
                 "data" => $insert
             ]);
-        }else{
+        } else {
             return response()->json([
                 "code" => 400,
                 "message" => "Bad request !",
@@ -245,17 +255,18 @@ class ProductController extends Controller
      *         description="Required field empty"
      *     ),
      * )
-     * 
-     * 
+     *
+     *
      */
 
     //update data product
-    public function updateProduct(Request $request){
+    public function updateProduct(Request $request): JsonResponse
+    {
         //validation
         $validator = Validator::make($request->all(), [
-            'name'     => 'required',
-            'price'    => 'required',
-            'quantity'=> 'required'
+            'name' => 'required',
+            'price' => 'required',
+            'quantity' => 'required'
         ]);
 
         //if some data is null
@@ -267,7 +278,7 @@ class ProductController extends Controller
             ]);
         }
 
-        // //execute 
+        // //execute
         $update = $this->productRepository->updateProduct($request);
 
         if ($update) {
@@ -276,7 +287,7 @@ class ProductController extends Controller
                 "message" => "Product updated successfully.",
                 "data" => $update
             ]);
-        }else{
+        } else {
             return response()->json([
                 "code" => 400,
                 "message" => "Bad request !",
@@ -301,16 +312,17 @@ class ProductController extends Controller
      *         description="Invalid input"
      *     ),
      * )
-     * 
-     * 
+     *
+     *
      */
 
     //delete data product
-    public function deleteProduct(Request $request){
+    public function deleteProduct(Request $request): JsonResponse
+    {
         //validation
         $id = $request->route('id');
 
-        // //execute 
+        // //execute
         $delete = $this->productRepository->deleteProduct($id);
 
         if ($delete) {
@@ -319,7 +331,7 @@ class ProductController extends Controller
                 "message" => "Product deleted successfully.",
                 "data" => $delete
             ]);
-        }else{
+        } else {
             return response()->json([
                 "code" => 400,
                 "message" => "Bad request !",

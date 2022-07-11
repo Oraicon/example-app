@@ -1,10 +1,10 @@
 {
     "openapi": "3.0.0",
     "info": {
-        "title": "L5 OpenApi",
-        "description": "L5 Swagger OpenApi description",
+        "title": "Marketplace Swager API Documentation",
+        "description": "Marketplace Swager API Description",
         "contact": {
-            "email": "darius@matulionis.lt"
+            "email": "example@google.com"
         },
         "license": {
             "name": "Apache 2.0",
@@ -12,17 +12,70 @@
         },
         "version": "1.0.0",
         "x-logo": {
-            "url": "https://via.placeholder.com/190x90.png?text=L5-Swagger"
+            "url": "https://via.placeholder.com/190x90.png?text=MarketPlace"
         }
     },
     "paths": {
-        "/v1/products": {
+        "/api/v1/product": {
+            "get": {
+                "tags": [
+                    "product"
+                ],
+                "summary": "Returns All Product API response",
+                "description": "A sample greeting to test out the API",
+                "operationId": "product",
+                "parameters": [
+                    {
+                        "name": "product_name",
+                        "in": "query",
+                        "description": "product name",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "product_price",
+                        "in": "query",
+                        "description": "product price",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "product_quantity",
+                        "in": "query",
+                        "description": "product quantity",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "retrived data successfully"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "404": {
+                        "description": "Not found"
+                    },
+                    "422": {
+                        "description": "Required field empty"
+                    }
+                }
+            }
+        },
+        "/v1/products/{pagePaginate}": {
             "get": {
                 "tags": [
                     "ProductController"
                 ],
-                "summary": "Read all product",
-                "operationId": "readAllProduct",
+                "summary": "Read paginate product",
+                "operationId": "paginateProduct",
                 "responses": {
                     "200": {
                         "description": "Product read successfully"
@@ -31,7 +84,26 @@
                         "description": "Invalid input"
                     }
                 }
-            },
+            }
+        },
+        "/v1/products/{sortBy}/{sorting}/{filterByColumn}/{searchByColumn}": {
+            "get": {
+                "tags": [
+                    "ProductController"
+                ],
+                "summary": "Read date with sortBy,sorting, filter, and search by column",
+                "operationId": "sortingProduct",
+                "responses": {
+                    "200": {
+                        "description": "Product read successfully"
+                    },
+                    "405": {
+                        "description": "Invalid input"
+                    }
+                }
+            }
+        },
+        "/v1/products": {
             "put": {
                 "tags": [
                     "ProductController"
@@ -79,40 +151,6 @@
                         "description": "Product deleted successfully"
                     },
                     "400": {
-                        "description": "Invalid input"
-                    }
-                }
-            }
-        },
-        "/v1/products/{pagePaginate}": {
-            "get": {
-                "tags": [
-                    "ProductController"
-                ],
-                "summary": "Read paginate product",
-                "operationId": "paginateProduct",
-                "responses": {
-                    "200": {
-                        "description": "Product read successfully"
-                    },
-                    "405": {
-                        "description": "Invalid input"
-                    }
-                }
-            }
-        },
-        "/v1/products/{sortBy}/{sorting}/{filterByColumn}/{searchByColumn}": {
-            "get": {
-                "tags": [
-                    "ProductController"
-                ],
-                "summary": "Read date with sortby,sorting, filter, and search by column",
-                "operationId": "sortingProduct",
-                "responses": {
-                    "200": {
-                        "description": "Product read successfully"
-                    },
-                    "405": {
                         "description": "Invalid input"
                     }
                 }

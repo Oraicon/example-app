@@ -1,45 +1,24 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
-use App\Interfaces\ProductRepositoryInterface;
-use App\Interfaces\TransactionRepositoryInterface;
+use App\Interfaces\ProductInterface;
+use App\Interfaces\TransactionInterface;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-
+use OpenApi\Annotations as OA;
 
 class TransactionController extends Controller
 {
 
-    private ProductRepositoryInterface $productRepository;
-    private TransactionRepositoryInterface $transactionRepository;
+    private ProductInterface $productRepository;
+    private TransactionInterface $transactionRepository;
 
-    public function __construct(ProductRepositoryInterface $productRepository, TransactionRepositoryInterface $transactionRepository) 
+    public function __construct(ProductInterface $productRepository, TransactionInterface $transactionRepository)
     {
         $this->productRepository = $productRepository;
         $this->transactionRepository = $transactionRepository;
     }
-
-    /**
-     * @OA\Info(
-     *      version="1.0.0",
-     *      x={
-     *          "logo": {
-     *              "url": "https://via.placeholder.com/190x90.png?text=L5-Swagger"
-     *          }
-     *      },
-     *      title="L5 OpenApi",
-     *      description="L5 Swagger OpenApi description",
-     *      @OA\Contact(
-     *          email="darius@matulionis.lt"
-     *      ),
-     *     @OA\License(
-     *         name="Apache 2.0",
-     *         url="https://www.apache.org/licenses/LICENSE-2.0.html"
-     *     )
-     * )
-    */
 
     /**
      * Insert data transaction
@@ -65,12 +44,11 @@ class TransactionController extends Controller
      *         description="Required field empty"
      *     ),
      * )
-     * 
-     * 
+     *
+     *
      */
-
-    //transaction
-    public function transactionProduct(Request $request){
+    public function transactionProduct(Request $request): \Illuminate\Http\JsonResponse
+    {
         $validator = Validator::make($request->all(), [
             'name'     => 'required',
             'quantity'   => 'required',

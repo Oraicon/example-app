@@ -2,21 +2,13 @@
 
 namespace App\Repositories;
 
-use App\Interfaces\TransactionRepositoryInterface;
+use App\Interfaces\TransactionInterface;
 use App\Models\Transaction;
 
-class TransactionRepository implements TransactionRepositoryInterface 
+class TransactionRepository implements TransactionInterface
 {
 
-    public function insertTransaction($product_id, $transaction_quantity)
-    {
-        return Transaction::create([
-            'product_id'     => $product_id,
-            'transactions_quantity'   => $transaction_quantity
-        ]);
-    }
-
-    public function updateTransaction($request) 
+    public function updateTransaction($request)
     {
         return Transaction::where('product_name', $request->name)
         ->update([
@@ -26,4 +18,11 @@ class TransactionRepository implements TransactionRepositoryInterface
         ]);
     }
 
+    public function Transaction($product_id, $transaction_quantity)
+    {
+        return Transaction::create([
+            'product_id'     => $product_id,
+            'transactions_quantity'   => $transaction_quantity
+        ]);
+    }
 }
