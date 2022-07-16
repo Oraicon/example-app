@@ -5,12 +5,13 @@ Features
 CRUD + Transaction | Swagger Documentation API v3
 
 
-
 more information Example
 
 https://github.com/zircote/swagger-php/tree/master/Examples/Swagger
 
+command generate documentation every changes
 php artisan l5-swagger:generate
-php artisan ser
 
-localhost:8000/api/documentation
+start the server using 'php artisan ser'
+
+http://localhost:8000/api/documentation
