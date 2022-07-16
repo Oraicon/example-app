@@ -1,4 +1,4 @@
-name: Laravel
+name: Laravel Continues Intergration and Continues Delivery
 
 on:
   push:
