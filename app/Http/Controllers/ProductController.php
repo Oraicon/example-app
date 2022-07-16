@@ -10,7 +10,6 @@ use OpenApi\Annotations as OA;
 
 class ProductController extends Controller
 {
-
     private ProductInterface $productRepository;
 
     public function __construct(ProductInterface $productRepository)
@@ -65,24 +64,6 @@ class ProductController extends Controller
      *              type="boolean"
      *          )
      *     ),
-     *      @OA\RequestBody(
-     *         @OA\MediaType(
-     *             mediaType="multipart/form-data",
-     *             @OA\Schema(
-     *                  @OA\Property(
-     *                     description="product name",
-     *                     property="product_name",
-     *                     type="string",
-     *                 ),
-     *                 @OA\Property(
-     *                     description="file to upload",
-     *                     property="product_url",
-     *                     type="string",
-     *                     format="binary",
-     *                 ),
-     *             )
-     *         )
-     *     ),
      *     @OA\Response(response=200,description="Successful Operation"),
      *     @OA\Response(response=400,description="Bad Request"),
      *     @OA\Response(response=404,description="Not Found"),
@@ -93,16 +74,16 @@ class ProductController extends Controller
     {
         $read = $this->productRepository->getAllproduct();
 
-        if (!$read->isEmpty()) {
+        if (! $read->isEmpty()) {
             return response()->json([
-                "success" => 200,
-                "message" => "Product read successfully.",
-                "data" => $read
+                'success' => 200,
+                'message' => 'Product read successfully.',
+                'data' => $read,
             ]);
         } else {
             return response()->json([
-                "code" => 405,
-                "message" => "Invalid input !",
+                'code' => 405,
+                'message' => 'Invalid input !',
             ]);
         }
     }
@@ -113,16 +94,16 @@ class ProductController extends Controller
 
         $read = $this->productRepository->paginateProduct($pagePaginate);
 
-        if (!$read->isEmpty()) {
+        if (! $read->isEmpty()) {
             return response()->json([
-                "success" => 200,
-                "message" => "Product read successfully.",
-                "data" => $read
+                'success' => 200,
+                'message' => 'Product read successfully.',
+                'data' => $read,
             ]);
         } else {
             return response()->json([
-                "code" => 405,
-                "message" => "Invalid input !",
+                'code' => 405,
+                'message' => 'Invalid input !',
             ]);
         }
     }
@@ -135,23 +116,23 @@ class ProductController extends Controller
         $searchByColumn = $request->route('searchByColumn');
 
         if ($searchByColumn == null) {
-            $searchByColumn = "product_name";
+            $searchByColumn = 'product_name';
         }
 
         $read = $this->productRepository->sortingProduct($sortBy, $sorting, $filterByColumn, $searchByColumn);
 
         // var_dump($sortBy, $read);
 
-        if (!$read->isEmpty()) {
+        if (! $read->isEmpty()) {
             return response()->json([
-                "success" => 200,
-                "message" => "Product read successfully.",
-                "data" => $read
+                'success' => 200,
+                'message' => 'Product read successfully.',
+                'data' => $read,
             ]);
         } else {
             return response()->json([
-                "code" => 405,
-                "message" => "Invalid input !",
+                'code' => 405,
+                'message' => 'Invalid input !',
             ]);
         }
     }
@@ -168,9 +149,9 @@ class ProductController extends Controller
         //if some data is null
         if ($validator->fails()) {
             return response()->json([
-                "code" => 422,
-                "message" => "Required field empty",
-                "data" => $validator->errors()->toArray()
+                'code' => 422,
+                'message' => 'Required field empty',
+                'data' => $validator->errors()->toArray(),
             ]);
         }
 
@@ -180,15 +161,15 @@ class ProductController extends Controller
         //response
         if ($insert) {
             return response()->json([
-                "success" => 200,
-                "message" => "Product created successfully.",
-                "data" => $insert
+                'success' => 200,
+                'message' => 'Product created successfully.',
+                'data' => $insert,
             ]);
         } else {
             return response()->json([
-                "code" => 400,
-                "message" => "Bad request !",
-                "data" => $insert
+                'code' => 400,
+                'message' => 'Bad request !',
+                'data' => $insert,
             ]);
         }
     }
@@ -199,15 +180,15 @@ class ProductController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'required',
             'price' => 'required',
-            'quantity' => 'required'
+            'quantity' => 'required',
         ]);
 
         //if some data is null
         if ($validator->fails()) {
             return response()->json([
-                "code" => 422,
-                "message" => "Required field empty",
-                "data" => $validator->errors()->toArray()
+                'code' => 422,
+                'message' => 'Required field empty',
+                'data' => $validator->errors()->toArray(),
             ]);
         }
 
@@ -216,15 +197,15 @@ class ProductController extends Controller
 
         if ($update) {
             return response()->json([
-                "success" => 200,
-                "message" => "Product updated successfully.",
-                "data" => $update
+                'success' => 200,
+                'message' => 'Product updated successfully.',
+                'data' => $update,
             ]);
         } else {
             return response()->json([
-                "code" => 400,
-                "message" => "Bad request !",
-                "data" => $update
+                'code' => 400,
+                'message' => 'Bad request !',
+                'data' => $update,
             ]);
         }
     }
@@ -239,15 +220,15 @@ class ProductController extends Controller
 
         if ($delete) {
             return response()->json([
-                "success" => 200,
-                "message" => "Product deleted successfully.",
-                "data" => $delete
+                'success' => 200,
+                'message' => 'Product deleted successfully.',
+                'data' => $delete,
             ]);
         } else {
             return response()->json([
-                "code" => 400,
-                "message" => "Bad request !",
-                "data" => $delete
+                'code' => 400,
+                'message' => 'Bad request !',
+                'data' => $delete,
             ]);
         }
     }

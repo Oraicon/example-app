@@ -19,10 +19,11 @@ class Product extends Model
     protected $guarded = [];
 
     public $incrementing = false;
+
     protected $keyType = 'string';
 
-    protected static function boot() {
-
+    protected static function boot()
+    {
         parent::boot();
 
         static::creating(function ($model) {
@@ -36,6 +37,6 @@ class Product extends Model
         'id',
         'product_name',
         'product_price',
-        'product_quantity'
+        'product_quantity',
     ];
 }

@@ -10,8 +10,8 @@ use Illuminate\Support\Facades\Validator;
 
 class TransactionController extends Controller
 {
-
     private ProductInterface $productRepository;
+
     private TransactionInterface $transactionRepository;
 
     public function __construct(ProductInterface $productRepository, TransactionInterface $transactionRepository)
@@ -30,9 +30,9 @@ class TransactionController extends Controller
         //if some data is null
         if ($validator->fails()) {
             return response()->json([
-                "code" => 422,
-                "message" => "Required field empty",
-                "data" => $validator->errors()->toArray()
+                'code' => 422,
+                'message' => 'Required field empty',
+                'data' => $validator->errors()->toArray(),
             ]);
         }
 
@@ -60,25 +60,25 @@ class TransactionController extends Controller
                 $this->productRepository->updateProductQty($product_id, $quantity_rest);
                 // return response
                 return response()->json([
-                    "success" => 200,
-                    "message" => "Transaction created successfully.",
-                    "data" => [
+                    'success' => 200,
+                    'message' => 'Transaction created successfully.',
+                    'data' => [
                         'Product name' => $transaction_name,
                         'Quantity' => $transaction_quantity,
-                        'Total' => $transaction_amount
-                    ]
+                        'Total' => $transaction_amount,
+                    ],
                 ]);
             } else {
                 return response()->json([
-                    "code" => 400,
-                    "message" => "Bad request !",
+                    'code' => 400,
+                    'message' => 'Bad request !',
                 ]);
             }
             //if data doesnt exist
         } else {
             return response()->json([
-                "code" => 404,
-                "message" => "Not found !"
+                'code' => 404,
+                'message' => 'Not found !',
             ]);
         }
     }

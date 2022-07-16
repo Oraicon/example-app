@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\Api\SwaggerController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\TransactionController;
 use Illuminate\Http\Request;

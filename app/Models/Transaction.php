@@ -17,10 +17,11 @@ class Transaction extends Model
     protected $guarded = [];
 
     public $incrementing = false;
+
     protected $keyType = 'string';
 
-    protected static function boot() {
-
+    protected static function boot()
+    {
         parent::boot();
 
         static::creating(function ($model) {
@@ -33,6 +34,6 @@ class Transaction extends Model
     protected $fillable = [
         'id',
         'product_id',
-        'transactions_quantity'
+        'transactions_quantity',
     ];
 }

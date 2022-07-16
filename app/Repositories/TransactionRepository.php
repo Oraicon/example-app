@@ -7,7 +7,6 @@ use App\Models\Transaction;
 
 class TransactionRepository implements TransactionInterface
 {
-
     public function updateTransaction($request)
     {
         return Transaction::where('product_name', $request->name)
@@ -22,7 +21,7 @@ class TransactionRepository implements TransactionInterface
     {
         return Transaction::create([
             'product_id' => $product_id,
-            'transactions_quantity' => $transaction_quantity
+            'transactions_quantity' => $transaction_quantity,
         ]);
     }
 }

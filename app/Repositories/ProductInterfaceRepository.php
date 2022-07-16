@@ -32,9 +32,9 @@ class ProductInterfaceRepository implements ProductInterface
     public function insertProduct($request)
     {
         return Product::create([
-            'product_name'     => $request->name,
-            'product_price'     => $request->price,
-            'product_quantity'   => $request->quantity,
+            'product_name' => $request->name,
+            'product_price' => $request->price,
+            'product_quantity' => $request->quantity,
         ]);
     }
 
@@ -42,9 +42,9 @@ class ProductInterfaceRepository implements ProductInterface
     {
         return Product::where('product_name', $request->name)
         ->update([
-            'product_name'     => $request->name,
-            'product_price'     => $request->price,
-            'product_quantity'   => $request->quantity,
+            'product_name' => $request->name,
+            'product_price' => $request->price,
+            'product_quantity' => $request->quantity,
         ]);
     }
 
