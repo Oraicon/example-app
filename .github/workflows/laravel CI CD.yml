@@ -1,4 +1,4 @@
-name: Laravel Continues Intergration and Continues Delivery
+name: Laravel Continues Intergration and Continues Delivery Production
 
 on:
   push:
