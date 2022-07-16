@@ -6,6 +6,12 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 
+/**
+ * @method static fastPaginate($pagePaginate)
+ * @method static select($searchByColumn)
+ * @method static create(array $array)
+ * @method static where(string $string, $product_id)
+ */
 class Product extends Model
 {
     use HasFactory;
@@ -13,10 +19,11 @@ class Product extends Model
     protected $guarded = [];
 
     public $incrementing = false;
+
     protected $keyType = 'string';
 
-    protected static function boot() {
-
+    protected static function boot()
+    {
         parent::boot();
 
         static::creating(function ($model) {
@@ -30,6 +37,6 @@ class Product extends Model
         'id',
         'product_name',
         'product_price',
-        'product_quantity'
+        'product_quantity',
     ];
 }

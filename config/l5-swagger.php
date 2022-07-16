@@ -5,7 +5,7 @@ return [
     'documentations' => [
         'default' => [
             'api' => [
-                'title' => 'L5 Swagger UI',
+                'title' => 'BackEnd API Documentation Marketplace',
             ],
 
             'routes' => [
@@ -135,7 +135,7 @@ return [
             'pattern' => null,
 
             /*
-             * Absolute path to directories that should be exclude from scanning
+             * Absolute path to directories that should be excluded from scanning
              * @note This option overwrites `paths.excludes`
              * @see \OpenApi\scan
             */
@@ -281,7 +281,7 @@ return [
          * Constants which can be used in annotations
          */
         'constants' => [
-            'L5_SWAGGER_CONST_HOST' => env('L5_SWAGGER_CONST_HOST', 'http://my-default-host.com'),
+            'L5_SWAGGER_CONST_HOST' => env('L5_SWAGGER_CONST_HOST', 'http://localhost:8080'),
         ],
     ],
 ];

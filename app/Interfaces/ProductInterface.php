@@ -2,14 +2,21 @@
 
 namespace App\Interfaces;
 
-interface ProductRepositoryInterface 
+interface ProductInterface
 {
-    public function getAllproduct();
+    public function getAllProduct();
+
     public function paginateProduct($pagePaginate);
+
     public function sortingProduct($sortBy, $sorting, $filterByColumn, $searchByColumn);
+
     public function selectProduct($request);
+
     public function insertProduct($request);
+
     public function updateProduct($request);
-    public function updateQuantityproduct($product_id, $quantity_rest);
+
+    public function updateProductQty($product_id, $quantity_rest);
+
     public function deleteProduct($id);
 }

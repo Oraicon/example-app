@@ -2,9 +2,9 @@
 
 namespace App\Providers;
 
-use App\Interfaces\ProductRepositoryInterface;
-use App\Interfaces\TransactionRepositoryInterface;
-use App\Repositories\ProductRepository;
+use App\Interfaces\ProductInterface;
+use App\Interfaces\TransactionInterface;
+use App\Repositories\ProductInterfaceRepository;
 use App\Repositories\TransactionRepository;
 use Illuminate\Support\ServiceProvider;
 
@@ -18,8 +18,8 @@ class RepositoryServiceProvider extends ServiceProvider
     public function register()
     {
         //
-        $this->app->bind(ProductRepositoryInterface::class, ProductRepository::class);
-        $this->app->bind(TransactionRepositoryInterface::class, TransactionRepository::class);
+        $this->app->bind(ProductInterface::class, ProductInterfaceRepository::class);
+        $this->app->bind(TransactionInterface::class, TransactionRepository::class);
     }
 
     /**
