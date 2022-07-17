@@ -17,62 +17,155 @@
     },
     "servers": [
         {
-            "url": "http://localhost:8080",
+            "url": "http://localhost:8000",
             "description": "Demo API Server"
         }
     ],
     "paths": {
-        "/api/v1/product/{pageIndex}/{pageSize}": {
+        "/api/v1/product": {
+            "get": {
+                "tags": [
+                    "product"
+                ],
+                "summary": "Returns Product API response with all product",
+                "description": "returns product API response with all product",
+                "operationId": "productAll",
+                "responses": {
+                    "200": {
+                        "description": "Successful Operation"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    },
+                    "405": {
+                        "description": "Invalid Input"
+                    },
+                    "500": {
+                        "description": "Server Error"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "product"
+                ],
+                "summary": "Update data product",
+                "operationId": "productUpdate",
+                "requestBody": {
+                    "description": "Input data format",
+                    "content": {
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "description": "product name",
+                                        "type": "string"
+                                    },
+                                    "price": {
+                                        "description": "product price",
+                                        "type": "string"
+                                    },
+                                    "quantity": {
+                                        "description": "product quantity",
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful Operation"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    },
+                    "405": {
+                        "description": "Invalid Input"
+                    },
+                    "422": {
+                        "description": "Required field empty"
+                    },
+                    "500": {
+                        "description": "Server Error"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "product"
+                ],
+                "summary": "Create new product data",
+                "operationId": "productInsert",
+                "requestBody": {
+                    "description": "Input data format",
+                    "content": {
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "description": "product name",
+                                        "type": "string"
+                                    },
+                                    "price": {
+                                        "description": "product price",
+                                        "type": "string"
+                                    },
+                                    "quantity": {
+                                        "description": "product quantity",
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful Operation"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    },
+                    "405": {
+                        "description": "Invalid Input"
+                    },
+                    "500": {
+                        "description": "Server Error"
+                    }
+                }
+            }
+        },
+        "/api/v1/product/{pagePaginate}": {
             "get": {
                 "tags": [
                     "product"
                 ],
                 "summary": "Returns Product API response with Pagination",
                 "description": "returns product API response with Pagination",
-                "operationId": "product",
+                "operationId": "productPaginate",
                 "parameters": [
                     {
-                        "name": "pageIndex",
+                        "name": "pagePaginate",
                         "in": "query",
                         "description": "Page Index",
                         "required": true,
                         "schema": {
-                            "type": "string"
+                            "type": "integer"
                         },
                         "example": "1"
-                    },
-                    {
-                        "name": "pageSize",
-                        "in": "query",
-                        "description": "Page Size",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        },
-                        "example": "10"
-                    },
-                    {
-                        "name": "filterBy",
-                        "in": "query",
-                        "description": "Filter By Available Columns",
-                        "required": false,
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "type": "string",
-                                "default": "product_name"
-                            }
-                        },
-                        "example": "string 1,string 2,string 3"
-                    },
-                    {
-                        "name": "sortBy",
-                        "in": "query",
-                        "description": "Sort By Descending",
-                        "required": false,
-                        "schema": {
-                            "type": "boolean"
-                        }
                     }
                 ],
                 "responses": {
@@ -84,6 +177,165 @@
                     },
                     "404": {
                         "description": "Not Found"
+                    },
+                    "405": {
+                        "description": "Invalid Input"
+                    },
+                    "500": {
+                        "description": "Server Error"
+                    }
+                }
+            }
+        },
+        "/api/v1/product/{sortBy}/{sorting}/{filterByColumn}/{searchByColumn}": {
+            "get": {
+                "tags": [
+                    "product"
+                ],
+                "summary": "Returns Product API response with sort by column, sorting asc or desc, filter by price higher than, and search by column",
+                "description": "Returns Product API response with sort by column, sorting asc or desc, filter by price higher than, and search by column",
+                "operationId": "productSorting",
+                "parameters": [
+                    {
+                        "name": "sortBy",
+                        "in": "query",
+                        "description": "Sorting by column",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "example": "1"
+                    },
+                    {
+                        "name": "sorting",
+                        "in": "query",
+                        "description": "Sorting by ascending or descending",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "example": "1"
+                    },
+                    {
+                        "name": "filterByColumn",
+                        "in": "query",
+                        "description": "Filter by price is higher than or equal",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "example": "1000"
+                    },
+                    {
+                        "name": "searchByColumn",
+                        "in": "query",
+                        "description": "Search By Column",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "product_name, product_price, product_quantity"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Operation"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    },
+                    "405": {
+                        "description": "Invalid Input"
+                    },
+                    "500": {
+                        "description": "Server Error"
+                    }
+                }
+            }
+        },
+        "/api/v1/product/{id}": {
+            "delete": {
+                "tags": [
+                    "product"
+                ],
+                "summary": "Delete data product",
+                "operationId": "productDelete",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "description": "id data",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "0852686e-9d64-4ada-a61b-5fc72fcadb27"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Operation"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    },
+                    "405": {
+                        "description": "Invalid Input"
+                    },
+                    "422": {
+                        "description": "Required field empty"
+                    },
+                    "500": {
+                        "description": "Server Error"
+                    }
+                }
+            }
+        },
+        "/api/v1/transaction": {
+            "post": {
+                "tags": [
+                    "transaction"
+                ],
+                "summary": "Create new transaction data",
+                "operationId": "productTransaction",
+                "requestBody": {
+                    "description": "Input data format",
+                    "content": {
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "description": "product name",
+                                        "type": "string"
+                                    },
+                                    "quantity": {
+                                        "description": "product price",
+                                        "type": "integer"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful Operation"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    },
+                    "405": {
+                        "description": "Invalid Input"
                     },
                     "500": {
                         "description": "Server Error"
@@ -117,6 +369,14 @@
         {
             "name": "product",
             "description": "Everything about your products",
+            "externalDocs": {
+                "description": "Find out more",
+                "url": "https://swagger.io"
+            }
+        },
+        {
+            "name": "transaction",
+            "description": "Everything about your transactions",
             "externalDocs": {
                 "description": "Find out more",
                 "url": "https://swagger.io"

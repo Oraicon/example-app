@@ -34,6 +34,14 @@ use OpenApi\Annotations as OA;
  *         url="https://swagger.io"
  *     )
  * )
+ *  @OA\Tag(
+ *     name="transaction",
+ *     description="Everything about your transactions",
+ *     @OA\ExternalDocumentation(
+ *         description="Find out more",
+ *         url="https://swagger.io"
+ *     )
+ * )
  * @OA\Server(
  *      url=L5_SWAGGER_CONST_HOST,
  *      description="Demo API Server"

@@ -20,7 +20,39 @@ class TransactionController extends Controller
         $this->transactionRepository = $transactionRepository;
     }
 
-    public function transaction(Request $request): JsonResponse
+    /**
+     * @OA\Post(
+     *     path="/api/v1/transaction",
+     *     tags={"transaction"},
+     *     summary="Create new transaction data",
+     *     operationId="productTransaction",
+     *     @OA\RequestBody(
+     *         description="Input data format",
+     *         @OA\MediaType(
+     *             mediaType="application/x-www-form-urlencoded",
+     *             @OA\Schema(
+     *                 type="object",
+     *                 @OA\Property(
+     *                     property="name",
+     *                     description="product name",
+     *                     type="string",
+     *                 ),
+     *                 @OA\Property(
+     *                     property="quantity",
+     *                     description="product price",
+     *                     type="integer",
+     *                 ),
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(response=200,description="Successful Operation"),
+     *     @OA\Response(response=400,description="Bad Request"),
+     *     @OA\Response(response=404,description="Not Found"),
+     *     @OA\Response(response=405,description="Invalid Input"),
+     *     @OA\Response(response=500,description="Server Error"),
+     * )
+     */
+    public function productTransaction(Request $request): JsonResponse
     {
         $validator = Validator::make($request->all(), [
             'name' => 'required',
@@ -71,14 +103,14 @@ class TransactionController extends Controller
             } else {
                 return response()->json([
                     'code' => 400,
-                    'message' => 'Bad request !',
+                    'message' => 'Bad request',
                 ]);
             }
             //if data doesnt exist
         } else {
             return response()->json([
                 'code' => 404,
-                'message' => 'Not found !',
+                'message' => 'Not found',
             ]);
         }
     }

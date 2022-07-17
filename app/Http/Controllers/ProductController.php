@@ -19,58 +19,19 @@ class ProductController extends Controller
 
     /**
      * @OA\Get(
-     *     path="/api/v1/product/{pageIndex}/{pageSize}",
+     *     path="/api/v1/product",
      *     tags={"product"},
-     *     summary="Returns Product API response with Pagination",
-     *     description="returns product API response with Pagination",
-     *     operationId="product",
-     *     @OA\Parameter(
-     *          name="pageIndex",
-     *          description="Page Index",
-     *          example="1",
-     *          required=true,
-     *          in="query",
-     *          @OA\Schema(
-     *              type="string"
-     *          )
-     *     ),
-     *     @OA\Parameter(
-     *          name="pageSize",
-     *          description="Page Size",
-     *          example="10",
-     *          required=true,
-     *          in="query",
-     *          @OA\Schema(
-     *              type="string"
-     *          )
-     *     ),
-     *     @OA\Parameter(
-     *          name="filterBy",
-     *          description="Filter By Available Columns",
-     *          example="string 1,string 2,string 3",
-     *          required=false,
-     *          in="query",
-     *         @OA\Schema(
-     *           type = "array",
-     *              @OA\Items(type="string",default="product_name")
-     *     )
-     *     ),
-     *     @OA\Parameter(
-     *          name="sortBy",
-     *          description="Sort By Descending",
-     *          required=false,
-     *          in="query",
-     *          @OA\Schema(
-     *              type="boolean"
-     *          )
-     *     ),
+     *     summary="Returns Product API response with all product",
+     *     description="returns product API response with all product",
+     *     operationId="productAll",
      *     @OA\Response(response=200,description="Successful Operation"),
      *     @OA\Response(response=400,description="Bad Request"),
      *     @OA\Response(response=404,description="Not Found"),
+     *     @OA\Response(response=405,description="Invalid Input"),
      *     @OA\Response(response=500,description="Server Error"),
      * )
      */
-    public function productPagination(): JsonResponse
+    public function productAll(): JsonResponse
     {
         $read = $this->productRepository->getAllproduct();
 
@@ -88,7 +49,31 @@ class ProductController extends Controller
         }
     }
 
-    public function paginateProduct(Request $request): JsonResponse
+    /**
+     * @OA\Get(
+     *     path="/api/v1/product/{pagePaginate}",
+     *     tags={"product"},
+     *     summary="Returns Product API response with Pagination",
+     *     description="returns product API response with Pagination",
+     *     operationId="productPaginate",
+     *     @OA\Parameter(
+     *          name="pagePaginate",
+     *          description="Page Index",
+     *          example="1",
+     *          required=true,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="integer"
+     *          )
+     *     ),
+     *     @OA\Response(response=200,description="Successful Operation"),
+     *     @OA\Response(response=400,description="Bad Request"),
+     *     @OA\Response(response=404,description="Not Found"),
+     *     @OA\Response(response=405,description="Invalid Input"),
+     *     @OA\Response(response=500,description="Server Error"),
+     * )
+     */
+    public function productPaginate(Request $request): JsonResponse
     {
         $pagePaginate = $request->route('pagePaginate');
 
@@ -103,12 +88,66 @@ class ProductController extends Controller
         } else {
             return response()->json([
                 'code' => 405,
-                'message' => 'Invalid input !',
+                'message' => 'Invalid input',
             ]);
         }
     }
 
-    public function sortingProduct(Request $request): JsonResponse
+    /**
+     * @OA\Get(
+     *     path="/api/v1/product/{sortBy}/{sorting}/{filterByColumn}/{searchByColumn}",
+     *     tags={"product"},
+     *     summary="Returns Product API response with sort by column, sorting asc or desc, filter by price higher than, and search by column",
+     *     description="Returns Product API response with sort by column, sorting asc or desc, filter by price higher than, and search by column",
+     *     operationId="productSorting",
+     *     @OA\Parameter(
+     *          name="sortBy",
+     *          description="Sorting by column",
+     *          example="1",
+     *          required=true,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="integer"
+     *          )
+     *     ),
+     *     @OA\Parameter(
+     *          name="sorting",
+     *          description="Sorting by ascending or descending",
+     *          example="1",
+     *          required=true,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="integer"
+     *          )
+     *     ),
+     *     @OA\Parameter(
+     *          name="filterByColumn",
+     *          description="Filter by price is higher than or equal",
+     *          example="1000",
+     *          required=true,
+     *          in="query",
+     *         @OA\Schema(
+     *           type="integer"
+     *         )
+     *     ),
+     *     @OA\Parameter(
+     *          name="searchByColumn",
+     *          description="Search By Column",
+     *          example="product_name, product_price, product_quantity",
+     *          required=true,
+     *          in="query",
+     *         @OA\Schema(
+     *           type="string"
+     *         )
+     *     ),
+     *     @OA\Response(response=200,description="Successful Operation"),
+     *     @OA\Response(response=400,description="Bad Request"),
+     *     @OA\Response(response=404,description="Not Found"),
+     *     @OA\Response(response=405,description="Invalid Input"),
+     *     @OA\Response(response=500,description="Server Error"),
+     * )
+     */
+    public function productSorting(Request $request): JsonResponse
     {
         $sortBy = $request->route('sortBy');
         $sorting = $request->route('sorting');
@@ -137,7 +176,44 @@ class ProductController extends Controller
         }
     }
 
-    public function insertProduct(Request $request): JsonResponse
+    /**
+     * @OA\Post(
+     *     path="/api/v1/product",
+     *     tags={"product"},
+     *     summary="Create new product data",
+     *     operationId="productInsert",
+     *     @OA\RequestBody(
+     *         description="Input data format",
+     *         @OA\MediaType(
+     *             mediaType="application/x-www-form-urlencoded",
+     *             @OA\Schema(
+     *                 type="object",
+     *                 @OA\Property(
+     *                     property="name",
+     *                     description="product name",
+     *                     type="string",
+     *                 ),
+     *                 @OA\Property(
+     *                     property="price",
+     *                     description="product price",
+     *                     type="string",
+     *                 ),
+     *                @OA\Property(
+     *                     property="quantity",
+     *                     description="product quantity",
+     *                     type="string",
+     *                 )
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(response=200,description="Successful Operation"),
+     *     @OA\Response(response=400,description="Bad Request"),
+     *     @OA\Response(response=404,description="Not Found"),
+     *     @OA\Response(response=405,description="Invalid Input"),
+     *     @OA\Response(response=500,description="Server Error"),
+     * )
+     */
+    public function productInsert(Request $request): JsonResponse
     {
         //validation
         $validator = Validator::make($request->all(), [
@@ -174,7 +250,45 @@ class ProductController extends Controller
         }
     }
 
-    public function updateProduct(Request $request): JsonResponse
+    /**
+     * @OA\Put(
+     *     path="/api/v1/product",
+     *     tags={"product"},
+     *     summary="Update data product",
+     *     operationId="productUpdate",
+     *     @OA\RequestBody(
+     *         description="Input data format",
+     *         @OA\MediaType(
+     *             mediaType="application/x-www-form-urlencoded",
+     *             @OA\Schema(
+     *                 type="object",
+     *                 @OA\Property(
+     *                     property="name",
+     *                     description="product name",
+     *                     type="string",
+     *                 ),
+     *                 @OA\Property(
+     *                     property="price",
+     *                     description="product price",
+     *                     type="string",
+     *                 ),
+     *                @OA\Property(
+     *                     property="quantity",
+     *                     description="product quantity",
+     *                     type="string",
+     *                 )
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(response=200,description="Successful Operation"),
+     *     @OA\Response(response=400,description="Bad Request"),
+     *     @OA\Response(response=404,description="Not Found"),
+     *     @OA\Response(response=405,description="Invalid Input"),
+     *     @OA\Response(response=422,description="Required field empty"),
+     *     @OA\Response(response=500,description="Server Error"),
+     * )
+     */
+    public function productUpdate(Request $request): JsonResponse
     {
         //validation
         $validator = Validator::make($request->all(), [
@@ -210,7 +324,31 @@ class ProductController extends Controller
         }
     }
 
-    public function deleteProduct(Request $request): JsonResponse
+    /**
+     * @OA\Delete(
+     *     path="/api/v1/product/{id}",
+     *     tags={"product"},
+     *     summary="Delete data product",
+     *     operationId="productDelete",
+     *     @OA\Parameter(
+     *          name="id",
+     *          description="id data",
+     *          example="0852686e-9d64-4ada-a61b-5fc72fcadb27",
+     *          required=true,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *     ),
+     *     @OA\Response(response=200,description="Successful Operation"),
+     *     @OA\Response(response=400,description="Bad Request"),
+     *     @OA\Response(response=404,description="Not Found"),
+     *     @OA\Response(response=405,description="Invalid Input"),
+     *     @OA\Response(response=422,description="Required field empty"),
+     *     @OA\Response(response=500,description="Server Error"),
+     * )
+     */
+    public function productDelete(Request $request): JsonResponse
     {
         //validation
         $id = $request->route('id');

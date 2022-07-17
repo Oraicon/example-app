@@ -14,7 +14,8 @@ class ProductInterfaceRepository implements ProductInterface
 
     public function paginateProduct($pagePaginate)
     {
-        return Product::fastPaginate($pagePaginate);
+        // return Product::select('id', 'product_name', 'product_price', 'product_quantity')->fastPaginate($pagePaginate);
+        return Product::fastPaginate(1);
     }
 
     public function sortingProduct($sortBy, $sorting, $filterByColumn, $searchByColumn)
@@ -31,11 +32,7 @@ class ProductInterfaceRepository implements ProductInterface
 
     public function insertProduct($request)
     {
-        return Product::create([
-            'product_name' => $request->name,
-            'product_price' => $request->price,
-            'product_quantity' => $request->quantity,
-        ]);
+        return Product::create(['product_name' => $request->name, 'product_price' => $request->price, 'product_quantity' => $request->quantity]);
     }
 
     public function updateProduct($request)
