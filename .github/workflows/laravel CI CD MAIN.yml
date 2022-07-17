@@ -2,9 +2,9 @@ name: Laravel Continues Integration and Continues Delivery Development
 
 on:
   push:
-    branches: [ "development" ]
+    branches: [ "main" ]
   pull_request:
-    branches: [ "development" ]
+    branches: [ "main" ]
 
 jobs:
   laravel-tests:
