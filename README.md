@@ -2,9 +2,28 @@
 
 [![Build Status](https://img.shields.io/travis/gothinkster/laravel-realworld-example-app/master.svg)](https://travis-ci.org/gothinkster/laravel-realworld-example-app)![example branch parameter](https://github.com/github/docs/actions/workflows/main.yml/badge.svg?branch=main) [![GitHub license](https://img.shields.io/github/license/gothinkster/laravel-realworld-example-app.svg)](https://raw.githubusercontent.com/gothinkster/laravel-realworld-example-app/master/LICENSE)
 
-> ### Example Template CRUD with Transaction
+> ### Example Template Laravel 9 CRUD and Transaction Back End
 
 This repo is functionality complete — PRs and issues welcome!
+
+### Main Feature List
+
+| Categories    | Features        | Status      | 
+|---------------|-----------------|-------------|
+| Master        | Products        | development |               
+|               | Merchant        | development |           
+|               | Client          | development |               
+| Transactions  | Main            | development |               
+
+### Library
+
+| Name          | Features                   | Status | Version |
+|---------------|----------------------------|--------|---------|
+| Swagger       | Documentation              | stable | 8.3.2   |    
+| Faker         | Generate Default Fake Data | stable | 1.9.2   |   
+| PHP           | Default latest Lib         | stable | 8.1     |    
+| Fast Paginate | Fast Pagination            | stable | 0.1.5   |  
+| PostgresSQL   | Database                   | stable | 12      |  
 
 ----------
 
@@ -31,7 +50,7 @@ Install all the dependencies using composer
 Copy the example env file and make the required configuration changes in the .env file
 
     cp .env.dev .env  (development settings)
-    cp .env.prod .env  (production settings)
+    cp .env.dev.docker .env  (docker development settings)
 
 Generate a new application key
 
@@ -60,7 +79,7 @@ You can now access the server at http://localhost:8000
 
 **Populate the database with seed data with relationships which includes users, articles, comments, tags, favorites and follows. This can help you to quickly start testing the api or couple a frontend and start using it with ready content.**
 
-Open the DummyDataSeeder and set the property values as per your requirement
+Open the DatabaseSeeder and set the property values as per your requirement
 
     database/seeds/DatabaseSeeder.php
 
@@ -90,11 +109,16 @@ docker-compose exec php php artisan db:seed
 docker-compose exec php php artisan serve --host=0.0.0.0
 ```
 
-The api can be accessed at [http://localhost:8000/api/v1/swagger](http://localhost:8000/api/v1/swagger).
+The api can be accessed at [http://localhost:8000/api/documemtation](http://localhost:8000/documemtation).
 
 ----------
 
 # Rest API using Swagger Documentation 3.0
+more information Example https://github.com/zircote/swagger-php/tree/master/Examples/Swagger
+
+command generate documentation every changes 
+
+    php artisan l5-swagger:generate
 
 Run the laravel development server
 
@@ -102,17 +126,16 @@ Run the laravel development server
 
 The api can now be accessed at
 
-    http://localhost:8000/api/v1/swagger
+    http://localhost:8000/api/documemtation
 
 Request headers
 
-| **Required** 	| **Key**              	| **Value**            	|
-|----------	|------------------	|------------------	|
-| Yes      	| Content-Type     	| application/json 	|
-| Yes      	| X-Requested-With 	| XMLHttpRequest   	|
-| Optional 	| Authorization    	| Token {JWT}      	|
+| **Required** 	 | **Key**              	 | **Value**            	 |
+|----------------|------------------------|------------------------|
+| Yes      	     | Content-Type     	     | application/json 	     |
+| Yes      	     | X-Requested-With 	     | XMLHttpRequest   	     |
+| Optional 	     | Authorization    	     | Token {JWT}      	     |
 
-Refer the [api specification](#api-specification) for more info.
 
 
 ----------
@@ -130,12 +153,10 @@ Refer the [api specification](#api-specification) for more info.
 - `app/Http/Controllers/Api` - Contains all the api controllers
 - `app/Http/Middleware` - Contains the JWT auth middleware
 - `app/Http/Requests/Api` - Contains all the api form requests
-- `app/RealWorld/Favorite` - Contains the files implementing the favorite feature
-- `app/RealWorld/Filters` - Contains the query filters used for filtering api requests
-- `app/RealWorld/Follow` - Contains the files implementing the follow feature
-- `app/RealWorld/Paginate` - Contains the pagination class used to paginate the result
-- `app/RealWorld/Slug` - Contains the files implementing slugs to articles
-- `app/RealWorld/Transformers` - Contains all the data transformers
+- `app/MarketPlace/Products` - Contains master and pagination filter
+- `app/MarketPlace/Merchant` - Contains master and pagination filter
+- `app/MarketPlace/Transactions` - Contains transaction and pagination filter
+- `app/MarketPlace/Client` - Contains client and pagination filter
 - `config` - Contains all the application configuration files
 - `database/factories` - Contains the model factory for all the models
 - `database/migrations` - Contains all the database migrations
