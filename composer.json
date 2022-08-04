@@ -10,7 +10,7 @@
         "guzzlehttp/guzzle": "^7.2",
         "hammerstone/fast-paginate": "^0.1.2",
         "laravel/framework": "^9.19",
-        "laravel/sanctum": "^2.14.1",
+        "laravel/sanctum": "^2.1",
         "laravel/tinker": "^2.7",
         "mbpcoder/laravel-api-versioning": "^1.2"
     },

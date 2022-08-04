@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\TransactionController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -21,7 +22,12 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::prefix('v1')->group(function () {
-    Route::controller(ProductController::class)->group(function () {
+    Route::controller(RegisterController::class)->group(function () {
+        Route::post('register', 'register');
+        Route::post('login', 'login');
+    });
+
+    Route::controller(ProductController::class)->middleware('auth:sanctum')->group(function () {
         Route::get('product', 'productAll');
         Route::get('product/{pagePaginate}', 'productPaginate');
         Route::get('product/{sortBy}/{sorting}/{filterByColumn}/{searchByColumn}', 'productSorting');
@@ -31,7 +37,7 @@ Route::prefix('v1')->group(function () {
         Route::delete('product/{id}', 'productDelete');
     });
     
-    Route::controller(TransactionController::class)->group(function () {
+    Route::controller(TransactionController::class)->middleware('auth:sanctum')->group(function () {
         Route::post('transaction', 'productTransaction');
     });
 });
